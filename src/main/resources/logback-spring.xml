@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    scan: 当属性设置为true时，配置文件如果发生改变，将会被重新加载 默认为true
+    scanPeriod：设置检测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒，
+                当scan为true时，此属性生效。默认时间间隔1分钟
+    debug: 当此属性为true时，将打印出logback内部日志信息，实时查看logback运行状态，默认为false
+-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--
+        子节点 contextName
+        设置上下文名称
+    -->
+    <contextName>logback</contextName>
+
+
+    <!--
+        子节点 root
+        必选节点，用来指定最基础的日志输出级别，只有一个level属性，默认是debug
+    -->
+    <root level="debug">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="consoleLog1"/>
+    </root>
+
+    <!--
+        子节点 property
+        设置变量 name和value属性
+    -->
+    <property name="logback.logdir" value="/Users/inke/dev/log/tomcat"/>
+    <property name="logback.appname" value="app"/>
+
+
+    <!--
+        子节点 appender
+        格式化日志输出节点 name和class属性，class用来指定那种输出策略，常用的就是控制台输出和文件输出策略
+    -->
+    <!--控制台输出-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <!--展示格式-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </layout>
+
+        <!--拦截器 过滤掉ERROR级别一下的日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <appender name="consoleLog2" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <!--
+        子节点 loger
+        用来设置某一个包或者具体类的日志打印级别。
+    -->
+
+
+</configuration>
